@@ -1,0 +1,6 @@
+{
+  "name": "Todo Application",
+  "short_name": "Todo",
+  "start_url": "./index.html",
+  "display": "standalone"
+}

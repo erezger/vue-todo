@@ -1,0 +1,8 @@
+{
+  "DIR": "rtl",
+  "TODO": {
+    "NAME": "Name",
+    "ADD": "Add",
+    "NO_TODO": "No todo's to show..."
+  }
+}
