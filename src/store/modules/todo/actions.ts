@@ -1,34 +1,76 @@
 import {RootState} from '@/store/index';
 import {ActionContext, ActionTree} from 'vuex';
 import {TodoState} from '@/store/modules/todo/index';
-import {DELETE_TODO, SAVE_TODO, SET_TODO_LIST, TOGGLE_TODO_STATUS} from '@/types/todo.types';
+import {DELETE_TODO, GET_TODOS, SAVE_TODO, SET_TODO_LIST, PATCH_TODO} from '@/types/todo.types';
 import {TodoModel} from '@/models/todo.model';
+import TodoService from '@/globals/todo.service';
+import {$httpClient} from '@/globals/http-client';
+import {apiKeyInterceptor} from '@/globals/apikey.interceptors';
+
+const todoService = new TodoService();
+$httpClient.addRequestInterceptor(apiKeyInterceptor);
 
 export const actions: ActionTree<TodoState, RootState> = {
 
-  [SAVE_TODO]: (
+  [GET_TODOS]: (
     {state, commit}: ActionContext<TodoState, RootState>,
-    todoItem: TodoModel,
   ) => {
-    const todoList = [...state.todoList, todoItem]
-    commit(SET_TODO_LIST, todoList);
+    todoService.getTodos()
+      .subscribe(
+        (data) => {
+          /*const todos = {
+            records: [
+              {
+                id: 'recQSvVLiA6Y1x6fV',
+                fields: {
+                  Text: 'another task 2',
+                  Status: 'Todo',
+                  Tags: '["tag1","tag2"]',
+                },
+                createdTime: '2021-11-10T15:25:27.000Z',
+              },
+            ],
+          };
+          commit(SET_TODO_LIST, todos);*/
+          commit(SET_TODO_LIST, data.records);
+        },
+      );
   },
 
-  [TOGGLE_TODO_STATUS]: (
-    {state, commit}: ActionContext<TodoState, RootState>,
-    item: { event: boolean, idx: number },
+  [SAVE_TODO]: (
+    {state, commit, dispatch}: ActionContext<TodoState, RootState>,
+    todoItem: TodoModel,
   ) => {
-    const todoList = [...state.todoList];
-    todoList[item.idx].complete = item.event;
-    commit(SET_TODO_LIST, todoList);
+    todoService.saveTodo(todoItem)
+      .subscribe(
+        (data) => {
+          commit(SET_TODO_LIST, data.records);
+          dispatch(GET_TODOS);
+        },
+      );
+  },
+
+  [PATCH_TODO]: (
+    {state, commit, dispatch}: ActionContext<TodoState, RootState>,
+    todoItem: TodoModel,
+  ) => {
+    todoService.patchTodo(todoItem)
+      .subscribe(
+        () => {
+          dispatch(GET_TODOS);
+        },
+      );
   },
 
   [DELETE_TODO]: (
-    {state, commit}: ActionContext<TodoState, RootState>,
-    idx: number,
+    {state, commit, dispatch}: ActionContext<TodoState, RootState>,
+    id: string,
   ) => {
-    const todoList = [...state.todoList];
-    todoList.splice(idx, 1);
-    commit(SET_TODO_LIST, todoList);
+    todoService.deleteTodo(id)
+      .subscribe(
+        () => {
+          dispatch(GET_TODOS);
+        },
+      );
   },
 };

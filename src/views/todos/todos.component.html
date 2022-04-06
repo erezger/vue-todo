@@ -1,29 +1,32 @@
 <div class="home-page page">
-    <form class="todo-form" @submit="addTodo">
-        <div class="row align-items-center justify-content-center">
-            <div class="col-sm-10 col-12 mb-3">
-                <label class="sr-only" for="todoName">{{ $t('TODO.NAME') }}</label>
-                <input type="text" required class="form-control mb-2" id="todoName" placeholder="todos..."
-                       v-model="name">
-            </div>
-            <div class="col-sm-2 mb-3 col-12">
-                <button type="submit" class="btn btn-success mb-2 w-100" @submit="addTodo()">{{
-                        $t('TODO.ADD')
-                    }}
-                </button>
-            </div>
-        </div>
-    </form>
+    <input type="text" required class="form-control mb-2" id="search" placeholder="filter by tags..."
+           v-model="searchText">
     <div class="card" v-if="todolist && todolist.length">
         <div class="card-body shadow bg-white rounded">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item" v-for="(todo, idx) in todolist" :key="idx">
-                    <list-item :todo="todo" :idx="idx" @change="toggle" @delete="deleteTodo"></list-item>
+                <!--                <li class="list-group-item" v-for="(todo, idx) in todolist" :key="idx">-->
+                <li class="list-group-item" v-for="(todo, idx) in filteredTodos" :key="idx">
+                    <list-item :todo="todo" :idx="idx" @delete="deleteTodo" @patch="patchTodo"></list-item>
                 </li>
             </ul>
+            <span v-if="filteredTodos &&  filteredTodos.length < 1">{{ $t('TODO.NO_TODO_TAG') }} </span>
         </div>
     </div>
     <h2 v-else>
         {{ $t('TODO.NO_TODO') }}
     </h2>
+    <form class="todo-form" v-on:submit.prevent>
+        <div class="row align-items-center justify-content-center">
+            <div class="col-sm-10 col-12 mb-3">
+                <label class="sr-only" for="todoName">{{ $t('TODO.NAME') }}</label>
+                <input type="text" required class="form-control mb-2" id="todoName" placeholder="todos..."
+                       v-model="text">
+            </div>
+            <div class="col-sm-2 mb-3 col-12">
+                <button type="button" class="btn btn-success mb-2 w-100" @click="addTodo()">
+                    {{ $t('TODO.ADD') }}
+                </button>
+            </div>
+        </div>
+    </form>
 </div>

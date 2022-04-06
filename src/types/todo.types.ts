@@ -2,8 +2,9 @@
 export const TODO_ROOT = 'todo/';
 
 // Actions types
+export const GET_TODOS = 'getTodo';
 export const SAVE_TODO = 'saveTodo';
-export const TOGGLE_TODO_STATUS = 'toggleTodoStatus';
+export const PATCH_TODO = 'patchTodo';
 export const DELETE_TODO = 'deleteTodo';
 
 // Mutations types

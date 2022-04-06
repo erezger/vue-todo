@@ -40,3 +40,25 @@ html, body {
     color: darkred;
   }
 }
+
+.card {
+  margin-bottom: 20px;
+}
+
+.tags-cont {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+
+  .tags {
+    display: flex;
+
+    .tag {
+      margin-right: 5px;
+    }
+  }
+
+  .form-control {
+    width: 100px;
+  }
+}

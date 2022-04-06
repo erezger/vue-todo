@@ -3,6 +3,7 @@
   "TODO": {
     "NAME": "Name",
     "ADD": "Add",
-    "NO_TODO": "No todo's to show..."
+    "NO_TODO": "No todo's to show...",
+    "NO_TODO_TAG": "No todo's to show with that tag"
   }
 }

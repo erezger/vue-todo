@@ -1,4 +1,11 @@
 export interface TodoModel {
-  name: string;
-  complete: boolean;
+  id?: string;
+  fields: TodoField;
+  createdTime?: Date;
+}
+
+export interface TodoField {
+  Text: string;
+  Status: string;
+  Tags: string;
 }

@@ -5,16 +5,19 @@ import {mutations} from './mutations';
 import {getters} from './getters';
 import {RootState} from '@/store';
 import {TodoModel} from '@/models/todo.model';
+import {BaseResponse} from '@/models/base-response.model';
 
 Vue.use(Vuex);
 
 export interface TodoState {
+  todoModel: BaseResponse;
   todoList: TodoModel[];
 }
 
 // message state model init
 export const initialState = (): TodoState => {
   return {
+    todoModel: {} as BaseResponse,
     todoList: [],
   };
 };
